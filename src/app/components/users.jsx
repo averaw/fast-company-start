@@ -1,22 +1,25 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { paginate } from "../utils/paginate";
 import Pagination from "./pagination";
+import { paginate } from "../utils/paginate";
 import GroupList from "./groupList";
 import api from "../api";
 import SearchStatus from "./searchStatus";
 import UserTable from "./usersTable";
 import _ from "lodash";
-const Users = () => {
+import UserPage from "./userPage";
+
+const Users = ({ match }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfeshion] = useState();
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({
-        iter: "name",
+        path: "name",
         order: "asc"
     }); /* состояние заголовка при  сортировке по алфовиту */
 
     const pageSize = 8;
+    const userId = match.params.userId;
     const [users, setUsers] = useState([]);
     useEffect(() => {
         api.users.fetchAll().then((data) => setUsers(data));
@@ -55,10 +58,10 @@ const Users = () => {
     if (users) {
         const filteredUsers = selectedProf
             ? users.filter(
-                (user) =>
-                    JSON.stringify(user.profession) ===
-                    JSON.stringify(selectedProf)
-            )
+                  (user) =>
+                      JSON.stringify(user.profession) ===
+                      JSON.stringify(selectedProf)
+              )
             : users;
 
         const count = filteredUsers.length;
@@ -66,12 +69,14 @@ const Users = () => {
             filteredUsers,
             [sortBy.path],
             [sortBy.order]
-        ); /* сортировка данных , импортировали лодаш ,а потом добавии метод orderBy, сортируем по алфавиту"asc"  по имени ,"desc" - в обратном порядке ,далее добавляем useState  */
+        );
         const usersCrop = paginate(sortedUsers, currentPage, pageSize);
         const clearFilter = () => {
             setSelectedProf();
-        }; /* изменяет состояние всего компонента */
-        return (
+        };
+        return userId ? (
+            <UserPage userId={userId} users={users} />
+        ) : (
             <div className="d-flex">
                 {professions && (
                     <div className="d-flex flex-column flex-shrink-0 p-3">
@@ -116,7 +121,8 @@ const Users = () => {
     return "loading...";
 };
 Users.propTypes = {
-    users: PropTypes.array
+    users: PropTypes.array,
+    match: PropTypes.object.isRequired
 };
 
 export default Users;

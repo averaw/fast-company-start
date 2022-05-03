@@ -13,33 +13,33 @@ const GroupList = ({
         <ul className="list-group">
             {!isArray
                 ? Object.keys(items).map((item) => (
-                    <li
-                        key={items[item][valueProperty]}
-                        className={
-                            "list-group-item" +
-                            (items[item] === selectedItem ? " active" : "")
-                        }
-                        onClick={() => onItemSelect(items[item])}
-                        role="button"
-                    >
-                        {items[item][contentProperty]}
-                    </li>
-                ))
+                      <li
+                          key={items[item][valueProperty]}
+                          className={
+                              "list-group-item" +
+                              (items[item] === selectedItem ? " active" : "")
+                          }
+                          onClick={() => onItemSelect(items[item])}
+                          role="button"
+                      >
+                          {items[item][contentProperty]}
+                      </li>
+                  ))
                 : items.map((item) => {
-                    return (
-                        <li
-                            onClick={() => onItemSelect(item)}
-                            role="button"
-                            key={item._id}
-                            className={
-                                "list-group-item" +
-                                (item === selectedItem ? "active" : "")
-                            }
-                        >
-                            {item.name}
-                        </li>
-                    );
-                })}
+                      return (
+                          <li
+                              onClick={() => onItemSelect(item)}
+                              role="button"
+                              key={item._id}
+                              className={
+                                  "list-group-item" +
+                                  (item === selectedItem ? "active" : "")
+                              }
+                          >
+                              {item.name}
+                          </li>
+                      );
+                  })}
         </ul>
     );
 };

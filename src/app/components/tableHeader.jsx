@@ -1,10 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-const TableHeader = ({
-    onSort,
-    selectedSort,
-    columns
-}) => {
+
+const TableHeader = ({ onSort, selectedSort, columns }) => {
     const handleSort = (item) => {
         if (selectedSort.path === item) {
             onSort({
@@ -17,11 +14,13 @@ const TableHeader = ({
     };
     const iconSort = (selectedSort, item) => {
         if (selectedSort.path === item) {
-            if (selectedSort.order === "asc") {
-                return <i className="bi bi-caret-up-fill"></i>;
-            } else {
-                return <i className="bi bi-caret-down-fill"></i>;
-            }
+            return (
+                <i
+                    className={`bi bi-caret-${
+                        selectedSort.order === "asc" ? "up" : "down"
+                    }-fill`}
+                />
+            );
         }
         return null;
     };
